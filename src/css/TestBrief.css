@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100&display=swap');
+
+.test-page{
+  text-align: center;
+  margin: 15px 10vw;
+  width: 80%;
+  color: white;
+  font-family: "Roboto";
+    background: -webkit-linear-gradient(45deg, #001535, #000216);
+  border-radius: 5px;
+}
+
+.test-page:hover {
+    background-color: rgba(20, 100, 200, 0.3);
+}
+
+.test-page:active {
+    background-color: rgba(10, 80, 160, 0.3);
+}
+
+.testTextDisplay {
+  text-align: left;
+  vertical-align: middle;
+  margin: 3% auto;
+}
+
+.testimgDisplay {
+  margin: 3% auto;
+  width: 30%;
+}
+
+.buttonBlock {
+  margin: 3% 3%;
+  text-align: right;
+}
+
+.testButtonDisplay {
+  background-color: rgba(255, 0, 0, 0);
+  border-width: thin;
+  border-style: solid;
+  border-color: white;
+}
