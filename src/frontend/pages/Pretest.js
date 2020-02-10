@@ -113,7 +113,7 @@ class Pretest extends Component {
               </Row>
             <Row>
             <Col md={4}>
-            <p className="form-title"><span className="required-star">*</span> Date of Birth</p>
+            <p className="form-title"><span className="required-star">*</span> Age</p>
             </Col>
             <Col>
               <input type="number" name="age" onChange={this.updateField} value={this.state.age}/>
