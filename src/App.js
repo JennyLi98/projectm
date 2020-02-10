@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Navbar, Nav, Button, Row, Col} from 'react-bootstrap';
-import './css/App.css';
+import './frontend/css/App.css';
 //import {animals} from './animals';
 // import logo from 'logo.svg';
-import SearchBox from './pages/SearchBox';
+import SearchBox from './frontend/pages/SearchBox';
 
-import TestPage from './pages/TestPage.js';
-import TestList from './pages/TestList.js';
-import MainPage from './pages/MainPage.js';
-import Disclaimer from './pages/Disclaimer.js';
-import About from './pages/About.js';
-import Faq from './pages/Faq.js';
-import Pretest from './pages/Pretest.js';
-import Contact from './pages/Contact.js';
+import TestPage from './frontend/pages/TestPage.js';
+import TestList from './frontend/pages/TestList.js';
+import MainPage from './frontend/pages/MainPage.js';
+import Disclaimer from './frontend/pages/Disclaimer.js';
+import About from './frontend/pages/About.js';
+import Faq from './frontend/pages/Faq.js';
+import Pretest from './frontend/pages/Pretest.js';
+import Contact from './frontend/pages/Contact.js';
 import {BrowserRouter, Route, Link} from 'react-router-dom';
-import Test from "./services/test";
+import Test from "./frontend/services/test";
 class App extends Component {
   constructor(){
     super();
