@@ -5,6 +5,7 @@ import {Container, Row, Col, Button} from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import {Redirect} from 'react-router-dom';
 import TestImage from './TestImage.js';
+import Keyboard from '../imgs/keyboard.jpg';
 
 const testInfo = [
   {"name":"Indoor","description":"","url":"https://www.elitetrimworks.com/skin1/images/gallery/square/square%20columns_27PM.png"},
@@ -147,7 +148,12 @@ class TestPage extends Component {
         <div className="TestPage">
           <div className="instruction-block">
           <p className="instruction-title">Part I: </p>
-          <p className="instruction">In this task you will see a series of objects, one at a time, on the screen. Your job is to decide if that object belongs indoors or outdoors using the F and J keys. You will have two seconds to respond to each image. If you are unsure if an object is indoors or outdoors, make your best guess. Place your index fingers on the F and J keys and try your best to keep them there throughout the task. The 'F' key is the 'Indoor' response, and the 'J' key is the 'Outdoor' response.</p>
+          <p className="instruction">In this task you will see a series of objects, one at a time, on the screen. Your job is to decide if that object belongs indoors or outdoors using the F and J keys.
+          </p>
+          <p className="instruction">You will have two seconds to respond to each image. If you are unsure if an object is indoors or outdoors, make your best guess.
+          </p>
+          <p className="instruction">Place your index fingers on the F and J keys and try your best to keep them there throughout the task. The 'F' key is the 'Indoor' response, and the 'J' key is the 'Outdoor' response.</p>
+          <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
           </div>
           <Button onClick={this.toStudy}>Continue</Button>
         </div>
@@ -160,11 +166,17 @@ class TestPage extends Component {
           <div className="instruction-block">
           <p className="instruction instruction-title">Part II: </p>
           <div className="instruction">
-          <p>Now you will see another series of objects, one at a time. This time your job is to decide if you have seen that object in the previous series. Some objects will be exactly the same, and so you will answer "Old". Some objects will be different, and so you will answer "New". Some objects may look similar, but not exactly the same. For those, you will still answer "New". For example, say you saw a red apple before, and now you see a green apple; you would count this as "new". If you are unsure, just make your best guess.
+          <p>Now you will see another series of objects, one at a time. This time your job is to decide if you have seen that object in the previous series.
+          </p>
+          <p>Some objects will be exactly the same, and so you will answer "Old".
+          Some objects will be different, and so you will answer "New". Some objects may look similar, but not exactly the same. For those, you will still answer "New".
+          </p>
+          <p>For example, say you saw a red apple before, and now you see a green apple; you would count this as "new". If you are unsure, just make your best guess.
           </p>
           <p>
           Like before, you will have 2 seconds to respond to each image. Try your best to keep your fingers on the F and J keys. The 'F' key is the 'New' response, and the 'J' key is the 'Old' response.</p>
           </div>
+          <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
           </div>
           <Button onClick={this.toTest}>Continue</Button>
         </div>

@@ -7,9 +7,9 @@ async function test() {
   return await Socket.GET(testEP);
 }
 
-async function user(email, dob, gender) {
+async function user(email, age, gender) {
   const payLoad = {
-    dob: dob,
+    age: age,
     gender: gender,
     email: email
   };

@@ -34,14 +34,14 @@ class App extends Component {
     this.setState({searchfield: event.target.value});
   }
 
-  handlePretest = (gender, birthday, email) => {
+  handlePretest = (gender, age, email) => {
     console.log(gender);
-    console.log(birthday);
+    console.log(age);
     console.log(email);
     this.setState({gender: gender});
-    this.setState({birthday: birthday});
+    this.setState({age: age});
 
-    Test.user(email, birthday, gender)
+    Test.user(email, age, gender)
       .then(response => {
         console.log(response);
         console.log(response.data.user_id);

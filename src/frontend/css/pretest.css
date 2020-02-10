@@ -38,6 +38,13 @@ input[type=email] {
     border-bottom: 2px solid #ffffff;
 }
 
+input[type=number] {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #ffffff;
+}
+
+
 input, select, textarea{
     color: #ffffff;
 }

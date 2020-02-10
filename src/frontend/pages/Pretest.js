@@ -5,7 +5,7 @@ import {Container, Row, Col, Button, Form, Check} from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import {Redirect} from 'react-router-dom';
 import TestImage from './TestImage.js';
-import DatePicker from "react-datepicker";
+import YearMonthPicker from 'react-year-month-picker'
 import {Link} from 'react-router-dom';
 import '../css/pretest.css';
 
@@ -24,8 +24,7 @@ class Pretest extends Component {
     stage: 0,
     form: {},
     intervalId: 0,
-    birthday: new Date(),
-    formattedDOB: "",
+    age: 18,
     gender: "Female",
     email: ""
   };
@@ -34,17 +33,6 @@ class Pretest extends Component {
     this.setState({stage: 1});
     console.log(this.state.stage);
   }
-
-  handleChange = date => {
-    if(date !== null) {
-      this.setState({
-        birthday: date
-      });
-      this.setState({
-        formattedDOB: date.toISOString().slice(0,10)
-      });
-    }
-  };
 
   updateField = ({ target }) => {
     const { name, value } = target;
@@ -128,10 +116,7 @@ class Pretest extends Component {
             <p className="form-title"><span className="required-star">*</span> Date of Birth</p>
             </Col>
             <Col>
-            <DatePicker
-              selected={this.state.birthday}
-              onChange={this.handleChange}
-            />
+              <input type="number" name="age" onChange={this.updateField} value={this.state.age}/>
             </Col>
             </Row>
             <Row>
@@ -143,7 +128,7 @@ class Pretest extends Component {
             </Col>
             </Row>
             </div>
-            <Link to="test"><Button onClick={() => this.props.handlePretest(this.state.gender, this.state.formattedDOB, this.state.email)}>Continue</Button></Link>
+            <Link to="test"><Button onClick={() => this.props.handlePretest(this.state.gender, this.state.age, this.state.email)}>Continue</Button></Link>
 
             </div>
           </div>
