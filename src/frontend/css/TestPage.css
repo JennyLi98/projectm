@@ -44,6 +44,11 @@
   text-align: center;
 }
 
+.TResultPage {
+  background-color: black;
+  text-align: center;
+}
+
 .instruction {
   color: white;
   font-size: 18px;
@@ -110,4 +115,78 @@
 
 .test-btn {
   width: 100px;
+}
+
+.test-button {
+  background-color: transparent;
+  border-color: #2d5ea8;
+  border-width: 3px;
+  border-radius: 5px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Roboto";
+}
+
+.test-button-pressed {
+  background-color: #2d5ea8;
+  border-color: #2d5ea8;
+  border-width: 3px;
+  border-radius: 5px;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Roboto";
+}
+
+.fade-out {
+  animation: fadeOut ease 1s;
+  -webkit-animation: fadeOut ease 1s;
+  -moz-animation: fadeOut ease 1s;
+  -o-animation: fadeOut ease 1s;
+  -ms-animation: fadeOut ease 1s;
+}
+@keyframes fadeOut {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+
+@-moz-keyframes fadeOut {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+
+@-o-keyframes fadeOut {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+
+@-ms-keyframes fadeOut {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
 }

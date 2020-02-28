@@ -29,6 +29,12 @@
   width: 30%;
 }
 
+.resultimgDisplay {
+  margin: 3% auto;
+  width: 300px;
+  height: 300px;
+}
+
 .buttonBlock {
   margin: 3% 3%;
   text-align: right;

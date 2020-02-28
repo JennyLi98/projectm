@@ -1,7 +1,7 @@
 import Socket from "../util/Socket";
 import { testEPs } from "../Config.json";
 
-const { testEP,  userEP, mdtoEP} = testEPs;
+const { testEP,  userEP, mdtoEP, mdtoPEP} = testEPs;
 
 async function test() {
   return await Socket.GET(testEP);
@@ -24,6 +24,12 @@ async function getMDTO(uid) {
 }
 
 
+async function getPMDTO() {
+  const payLoad = {
+  };
+  return await Socket.POST(mdtoPEP);
+}
+
 export default {
-  test, user, getMDTO
+  test, user, getMDTO, getPMDTO
 };

@@ -1,9 +1,10 @@
 {
-  "baseUrl": "http://yassabackup.bio.uci.edu:8000",
+  "baseUrl": "https://apimnemosyne.herokuapp.com",
   "pollLimit": 20,
   "testEPs": {
     "testEP": "/users/2.json",
     "userEP": "/users/",
-    "mdtoEP": "/mdto/"
+    "mdtoEP": "/mdto/",
+    "mdtoPEP": "/mdto/practice"
   }
 }

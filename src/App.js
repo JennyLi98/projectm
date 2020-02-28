@@ -16,6 +16,30 @@ import Pretest from './frontend/pages/Pretest.js';
 import Contact from './frontend/pages/Contact.js';
 import {BrowserRouter, Route, Link} from 'react-router-dom';
 import Test from "./frontend/services/test";
+import MLogo from './frontend/imgs/letter_m_blue.png';
+
+const testInfo =
+[
+  [
+  "https://www.elitetrimworks.com/skin1/images/gallery/square/square%20columns_27PM.png",
+  "https://live.staticflickr.com/3514/3810627510_d9a567624a_b.jpg",
+  "https://www.elitetrimworks.com/skin1/images/gallery/square/square_wood_columns.png",
+  "https://upload.wikimedia.org/wikipedia/commons/1/19/Park_Square%2C_Leeds_24_March_2017.jpg",
+  "https://inhabitat.com/wp-content/blogs.dir/1/files/2014/12/Foundry-Square-living-wall-by-Habitat-Horticulture-6.jpg",
+  "https://i1.wp.com/thepointsguy.com/wp-content/uploads/2019/03/Times-Square-NYC-Edition_March-2019_NEllis-25.jpg?ssl=1",
+  "https://mk0homznspaceco9ygoq.kinstacdn.com/wp-content/uploads/2018/09/Prestige-Park-Square-Elevation.jpg"
+  ],
+[
+  "https://www.elitetrimworks.com/skin1/images/gallery/square/square%20columns_27PM.png",
+  "https://live.staticflickr.com/3514/3810627510_d9a567624a_b.jpg",
+  "https://www.elitetrimworks.com/skin1/images/gallery/square/square_wood_columns.png",
+  "https://upload.wikimedia.org/wikipedia/commons/1/19/Park_Square%2C_Leeds_24_March_2017.jpg",
+  "https://inhabitat.com/wp-content/blogs.dir/1/files/2014/12/Foundry-Square-living-wall-by-Habitat-Horticulture-6.jpg",
+  "https://i1.wp.com/thepointsguy.com/wp-content/uploads/2019/03/Times-Square-NYC-Edition_March-2019_NEllis-25.jpg?ssl=1",
+  "https://mk0homznspaceco9ygoq.kinstacdn.com/wp-content/uploads/2018/09/Prestige-Park-Square-Elevation.jpg"
+  ]
+];
+
 class App extends Component {
   constructor(){
     super();
@@ -63,14 +87,7 @@ class App extends Component {
   };
 
   componentDidMount(){
-    var testInfo = [
-      {"name":"Indoor","description":"","url":"https://www.elitetrimworks.com/skin1/images/gallery/square/square%20columns_27PM.png"},
-      {"name":"Outdoor","description":"","url":"https://live.staticflickr.com/3514/3810627510_d9a567624a_b.jpg"},
-      {"name":"Inddor","description":"","url":"https://www.elitetrimworks.com/skin1/images/gallery/square/square_wood_columns.png"},
-      {"name":"Outdoor","description":"","url":"https://upload.wikimedia.org/wikipedia/commons/1/19/Park_Square%2C_Leeds_24_March_2017.jpg"},
-      {"name":"Indoor","description":"","url":"https://inhabitat.com/wp-content/blogs.dir/1/files/2014/12/Foundry-Square-living-wall-by-Habitat-Horticulture-6.jpg"},
-      {"name":"Indoor","description":"","url":"https://i1.wp.com/thepointsguy.com/wp-content/uploads/2019/03/Times-Square-NYC-Edition_March-2019_NEllis-25.jpg?ssl=1"},
-      {"name":"Outdoor","description":"","url":"https://mk0homznspaceco9ygoq.kinstacdn.com/wp-content/uploads/2018/09/Prestige-Park-Square-Elevation.jpg"}];
+
     this.setState({testInfo: testInfo});
     var animalsVar = [
       {
@@ -91,6 +108,8 @@ class App extends Component {
     this.setState({animals: animalsVar});
   }
 
+
+
   render() {
     const filteredAnimals = this.state.animals.filter(
       animal =>{
@@ -103,7 +122,7 @@ class App extends Component {
         <div className="content-wrapper">
           <BrowserRouter>
             <Navbar style={{backgroundColor: 'black'}} variant="dark" expand="md">
-              <img src="http://pngimg.com/uploads/letter_m/letter_m_PNG91.png" width="50px" style={{marginRight: 50+'px'}}/>
+              <img src={MLogo} width="50px" style={{marginRight: 50+'px'}}/>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
@@ -126,7 +145,7 @@ class App extends Component {
               )}/>
               <Route path='/test' render={() => (
                 <div>
-                  <TestPage testlist={this.state.testlist}/>
+                  <TestPage testlist={testInfo}/>
                 </div>
               )}/>
               <Route path='/testlist' render={() => (

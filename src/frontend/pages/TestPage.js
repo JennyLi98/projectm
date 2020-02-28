@@ -4,27 +4,20 @@ import '../css/TestPage.css';
 import {Container, Row, Col, Button} from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import {Redirect} from 'react-router-dom';
-import TestImage from './TestImage.js';
+import ResultList from './ResultList.js';
 import Keyboard from '../imgs/keyboard.jpg';
+import Test from "../services/test";
 
 const testInfo = [
   {"name":"Indoor","description":"","url":"https://www.elitetrimworks.com/skin1/images/gallery/square/square%20columns_27PM.png"},
   {"name":"Outdoor","description":"","url":"https://live.staticflickr.com/3514/3810627510_d9a567624a_b.jpg"},
-  {"name":"Inddor","description":"","url":"https://www.elitetrimworks.com/skin1/images/gallery/square/square_wood_columns.png"},
-  {"name":"Outdoor","description":"","url":"https://upload.wikimedia.org/wikipedia/commons/1/19/Park_Square%2C_Leeds_24_March_2017.jpg"},
-  {"name":"Indoor","description":"","url":"https://inhabitat.com/wp-content/blogs.dir/1/files/2014/12/Foundry-Square-living-wall-by-Habitat-Horticulture-6.jpg"},
-  {"name":"Indoor","description":"","url":"https://i1.wp.com/thepointsguy.com/wp-content/uploads/2019/03/Times-Square-NYC-Edition_March-2019_NEllis-25.jpg?ssl=1"},
-  {"name":"Outdoor","description":"","url":"https://mk0homznspaceco9ygoq.kinstacdn.com/wp-content/uploads/2018/09/Prestige-Park-Square-Elevation.jpg"}
+  {"name":"Inddor","description":"","url":"https://www.elitetrimworks.com/skin1/images/gallery/square/square_wood_columns.png"}
 ];
 
 const studyInfo = [
   {"name":"Indoor","description":"","url":"https://www.elitetrimworks.com/skin1/images/gallery/square/square%20columns_27PM.png"},
   {"name":"Outdoor","description":"","url":"https://live.staticflickr.com/3514/3810627510_d9a567624a_b.jpg"},
-  {"name":"Inddor","description":"","url":"https://www.elitetrimworks.com/skin1/images/gallery/square/square_wood_columns.png"},
-  {"name":"Indoor","description":"","url":"https://www.elitetrimworks.com/skin1/images/gallery/square/square%20columns_27PM.png"},
-  {"name":"Indoor","description":"","url":"https://inhabitat.com/wp-content/blogs.dir/1/files/2014/12/Foundry-Square-living-wall-by-Habitat-Horticulture-6.jpg"},
-  {"name":"Indoor","description":"","url":"https://i1.wp.com/thepointsguy.com/wp-content/uploads/2019/03/Times-Square-NYC-Edition_March-2019_NEllis-25.jpg?ssl=1"},
-  {"name":"Outdoor","description":"","url":"https://mk0homznspaceco9ygoq.kinstacdn.com/wp-content/uploads/2018/09/Prestige-Park-Square-Elevation.jpg"}
+  {"name":"Outdoor","description":"","url":"https://live.staticflickr.com/3514/3810627510_d9a567624a_b.jpg"}
 ];
 
 class TestPage extends Component {
@@ -36,15 +29,28 @@ class TestPage extends Component {
       interval: 1000,
       time: 0,
       list: [],
+      tlist:[],
       choseAnswer: false,
       intervalId: 0,
       test: false,
       second: false,
-      prepare: true,
+      prepare: false,
+      showSecs: 5,
+      tprep: true, //prepare page for trial
+      ttest: false,
+      tstudy: false,
+      tSecond: false,
+      tResult: false,
+      buttonpress: false,
+      fpress: false,
+      jpress: false,
       testlist: [['alt'], ['alt']]
     };
     this.toTest = this.toTest.bind(this);
     this.toStudy = this.toStudy.bind(this);
+    this.toReal = this.toReal.bind(this);
+    this.toTrialTest = this.toTrialTest.bind(this);
+    this.toTrialStudy = this.toTrialStudy.bind(this);
     this.handleInterval = this.handleInterval.bind(this);
   }
   componentWillMount() {
@@ -52,7 +58,11 @@ class TestPage extends Component {
   }
 
   componentDidMount() {
-    this.setState({testlist: this.props.testlist});
+    Test.getPMDTO()
+      .then(response => {
+      this.setState({tlist: response.data});
+    })
+    .catch(error => console.log(error));
   };
 
   handleInterval() {
@@ -60,8 +70,18 @@ class TestPage extends Component {
     this.setState({time: d.getTime()});
     this.timeout = setInterval(() => {
       let currentIdx = this.state.textIdx;
-      console.log(this.props.testlist[0].length);
-      if (currentIdx === this.props.testlist[0].length * 3 - 1) {
+      console.log(currentIdx % this.state.showSecs);
+      if (this.state.tlist.length != 0 && (this.state.ttest || this.state.tstudy) && currentIdx === this.state.tlist[0].length * this.state.showSecs - 1) {
+        if (this.state.ttest === true) {
+          this.setState({ ttest: false });
+          this.setState({ tResult: true });
+        }else {
+          this.setState({ tSecond: true });
+          this.setState({ tstudy: false });
+        }
+      }
+      else if (!this.state.ttest && !this.state.tstudy && currentIdx === this.props.testlist[0].length * this.state.showSecs - 1) {
+        console.log("need to finish now");
         if (this.state.test === true) {
           this.setState({ finished: true });
         }else {
@@ -70,8 +90,7 @@ class TestPage extends Component {
           console.log(this.state.list);
       }
       this.setState({ textIdx: currentIdx + 1 });
-      if(currentIdx % 3 === 2) {
-        console.log(Math.floor(currentIdx / 3));
+      if(currentIdx % this.state.showSecs === this.state.showSecs - 1) {
 
         var d = new Date();
         this.setState({time: d.getTime()});
@@ -79,11 +98,9 @@ class TestPage extends Component {
           var templ = this.state.list;
           templ.push([-1, -1]);
           this.setState({list: templ});
-          console.log(templ);
         }
         this.setState({choseAnswer: false});
       }
-      console.log("==>" + Math.floor(currentIdx % 3));
     }, this.state.interval);
 
     this.setState({intervalId: this.timeout});
@@ -93,31 +110,66 @@ class TestPage extends Component {
     var d = new Date();
     var millisec = d.getTime() - this.state.time;
     var templ = this.state.list;
-    if (millisec > 2000  && this.state.choseAnswer === false) {
-      console.log("longer than 2000");
+    if (millisec > 4000  && this.state.choseAnswer === false && e.keyCode !== 32) {
       templ.push([-1, -1]);
       this.setState({list: templ});
       this.setState({choseAnswer: true});
     }
     else if(e.key === 'f'  && this.state.choseAnswer === false) {
-      console.log("got f");
       var l = [0, millisec];
-      console.log(l);
       templ.push(l);
       this.setState({list: templ});
       this.setState({choseAnswer: true});
     }else if (e.key === 'j' && this.state.choseAnswer === false){
-      console.log("got j")
       var l = [1, millisec];
-      console.log(l);
       templ.push(l);
       this.setState({list: templ});
       this.setState({choseAnswer: true});
+    }else if (this.state.tlist !== [] && e.keyCode === 32){
+      e.preventDefault();
+      this.setState({buttonpress: true},
+      () => {
+        setTimeout(
+        () => {
+          if (this.state.tprep === true) {
+            this.toTrialStudy();
+          }
+          else if (this.state.tSecond === true) {
+            this.toTrialTest();
+          }
+          else if (this.state.tResult === true) {
+            this.toReal();
+          }
+          else if (this.state.prepare == true) {
+            this.toStudy();
+          }
+          else if (this.state.second === true) {
+            this.toTest();
+          }
+          this.setState({buttonpress:false});
+          window.scrollTo(0, 0);
+        }, 1000);
+      });
+    }
+    if (e.key === "j"){
+      this.setState({jpress: true},
+      () => {
+        setTimeout(() => {
+          this.setState({jpress:false});
+        }, 1000);
+      });
+    }
+    if (e.key === "f"){
+      this.setState({fpress: true},
+      () => {
+        setTimeout(() => {
+          this.setState({fpress:false});
+        }, 1000);
+      });
     }
   }
 
   toTest(){
-    console.log("test");
     this.setState({test: true});
     this.setState({second: false});
     this.setState({ textIdx: 0 });
@@ -125,37 +177,120 @@ class TestPage extends Component {
   }
 
   toStudy(){
-      console.log("study");
-      console.log(this.state.testlist);
       this.setState({prepare: false});
       this.setState({ textIdx: 0 });
       this.handleInterval();
   }
 
+  toTrialTest(){
+    this.setState({ttest: true});
+    this.setState({tSecond: false});
+    this.setState({ textIdx: 0 });
+    this.handleInterval();
+  }
+
+  toTrialStudy(event){
+      this.setState({tprep: false});
+      this.setState({tstudy: true});
+      this.setState({ textIdx: 0 });
+      this.handleInterval();
+  }
+
+  toReal(){
+      this.setState({prepare: true});
+      this.setState({tResult: false});
+      this.setState({list: []});
+  }
+
   render() {
-    console.log(this.props);
     let currentUrl = "";
-    if (this.props.testlist !== undefined && this.props.testlist[0] !== undefined){
-      console.log(this.props.testlist);
-      console.log(this.props.testlist[0]);
-      currentUrl = this.props.testlist[0][Math.floor(this.state.textIdx / 3)];
+    if ((this.state.ttest || this.state.tstudy) || (this.props.testlist !== undefined && this.props.testlist[0] !== undefined)){
       if (this.state.test) {
-        currentUrl = this.props.testlist[1][Math.floor(this.state.textIdx / 3)];
+        currentUrl = this.props.testlist[1][Math.floor(this.state.textIdx / this.state.showSecs)];
       }
+      else if (this.state.ttest) {
+        currentUrl = this.state.tlist[1][Math.floor(this.state.textIdx / this.state.showSecs)];
+      }
+      else if (this.state.tstudy) {
+        currentUrl = this.state.tlist[0][Math.floor(this.state.textIdx / this.state.showSecs)];
+      }
+      else {
+        currentUrl = this.props.testlist[0][Math.floor(this.state.textIdx / this.state.showSecs)];
+      }
+    }
+    if(this.state.tprep) {
+      return (
+        <div className="TestPage">
+          <div className="instruction-block">
+          <p className="instruction-title">Practice Part I: </p>
+          <div className="instruction">
+          <p>In this task you will see a series of objects, one at a time, on the screen. Your job is to decide if that object belongs indoors or outdoors using the F and J keys.
+          </p>
+          <p>You will have two seconds to respond to each image. If you are unsure if an object is indoors or outdoors, make your best guess.
+          </p>
+          <p>Place your index fingers on the F and J keys and try your best to keep them there throughout the task. The 'F' key is the 'Indoor' response, and the 'J' key is the 'Outdoor' response.</p>
+          </div>
+          <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
+          </div>
+          {this.state.buttonpress &&
+            <Button className="test-button-pressed" onKeyDown={(e) => this.toTrialStudy}>Let's practice!</Button>
+          }
+          {!this.state.buttonpress &&
+            <Button className="test-button" onKeyDown={(e) => this.toTrialStudy}>Let's practice!</Button>
+          }
+        </div>
+      );
     }
     if(this.state.prepare) {
       return (
         <div className="TestPage">
           <div className="instruction-block">
           <p className="instruction-title">Part I: </p>
-          <p className="instruction">In this task you will see a series of objects, one at a time, on the screen. Your job is to decide if that object belongs indoors or outdoors using the F and J keys.
+          <div className="instruction">
+          <p>In this task you will see a series of objects, one at a time, on the screen. Your job is to decide if that object belongs indoors or outdoors using the F and J keys.
           </p>
-          <p className="instruction">You will have two seconds to respond to each image. If you are unsure if an object is indoors or outdoors, make your best guess.
+          <p>You will have two seconds to respond to each image. If you are unsure if an object is indoors or outdoors, make your best guess.
           </p>
-          <p className="instruction">Place your index fingers on the F and J keys and try your best to keep them there throughout the task. The 'F' key is the 'Indoor' response, and the 'J' key is the 'Outdoor' response.</p>
+          <p>Place your index fingers on the F and J keys and try your best to keep them there throughout the task. The 'F' key is the 'Indoor' response, and the 'J' key is the 'Outdoor' response.</p>
+          </div>
           <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
           </div>
-          <Button onClick={this.toStudy}>Continue</Button>
+          {this.state.buttonpress &&
+            <Button className="test-button-pressed" onClick={this.toStudy}>Continue</Button>
+          }
+          {!this.state.buttonpress &&
+            <Button className="test-button" onClick={this.toStudy}>Continue</Button>
+          }
+
+        </div>
+      );
+    }
+    if(this.state.tSecond) {
+      clearInterval(this.state.intervalId);
+      return (
+        <div className="TestPage">
+          <div className="instruction-block">
+          <p className="instruction instruction-title">Practice Part II: </p>
+          <div className="instruction">
+          <p>Now you will see another series of objects, one at a time. This time your job is to decide if you have seen that object in the previous series.
+          </p>
+          <p>Some objects will be exactly the same, and so you will answer "Old".
+          Some objects will be different, and so you will answer "New". Some objects may look similar, but not exactly the same. For those, you will still answer "New".
+          </p>
+          <p>For example, say you saw a red apple before, and now you see a green apple; you would count this as "new". If you are unsure, just make your best guess.
+          </p>
+          <p>
+          Like before, you will have 2 seconds to respond to each image. Try your best to keep your fingers on the F and J keys. The 'F' key is the 'New' response, and the 'J' key is the 'Old' response.</p>
+          </div>
+          <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
+          </div>
+          {this.state.buttonpress &&
+            <Button className="test-button-pressed" onClick={this.toTrialTest}>Continue</Button>
+          }
+          {!this.state.buttonpress &&
+            <Button className="test-button" onClick={this.toTrialTest}>Continue</Button>
+          }
+
         </div>
       );
     }
@@ -178,7 +313,13 @@ class TestPage extends Component {
           </div>
           <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
           </div>
-          <Button onClick={this.toTest}>Continue</Button>
+          {this.state.buttonpress &&
+            <Button  className="test-button-pressed" onClick={this.toTest}>Continue</Button>
+          }
+          {!this.state.buttonpress &&
+            <Button  className="test-button" onClick={this.toTest}>Continue</Button>
+          }
+
         </div>
       );
     }
@@ -188,18 +329,42 @@ class TestPage extends Component {
         <div className="TestPage">
 
           <p className="instruction-title">You have finished the test, please use the link to go back to homepage.</p>
-          <Button href="/">Back to home page</Button>
+          <Button className="test-button" href="/">Back to home page</Button>
+        </div>
+      );
+    }
+    if(this.state.tResult) {
+      clearInterval(this.state.intervalId);
+      return (
+        <div className="TResultPage">
+          <p className="instruction-title">Here are the images that you've shown:</p>
+          <ResultList study={this.state.tlist[0]} test={this.state.tlist[1]} />
+          <p className="instruction-title">Ready for some real challenge?</p>
+          {this.state.buttonpress &&
+            <Button className="test-button-pressed" onClick={this.toReal}>Continue</Button>
+          }
+          {!this.state.buttonpress &&
+            <Button className="test-button" onClick={this.toReal}>Continue</Button>
+          }
         </div>
       );
     }
     else {
       return (
         <div className="TestPage">
-          <p className="instruction">Please click 'F' to select the option on the left, and click 'J' to select the option on the right. {Math.floor(this.state.textIdx / 3) + 1} / 4</p>
-          {this.state.textIdx % 3 !== 2 &&
+          {(this.state.ttest || this.state.tstudy) &&
+              <p className="instruction">Please click 'F' to select the option on the left, and click 'J' to select the option on the right. {Math.floor(this.state.textIdx / this.state.showSecs) + 1} / {this.state.tlist[0].length}</p>
+          }
+          {!this.state.ttest && !this.state.tstudy && (this.props.testlist !== undefined && this.props.testlist[0] !== undefined) &&
+              <p className="instruction">Please click 'F' to select the option on the left, and click 'J' to select the option on the right. {Math.floor(this.state.textIdx / this.state.showSecs) + 1} / {this.props.testlist[0].length}</p>
+          }
+          {this.state.textIdx % this.state.showSecs < this.state.showSecs - 2 &&
             <img src={currentUrl} alt='cannot display' height="300px" width="450px"/>
           }
-          {this.state.textIdx % 3 === 2 &&
+          {this.state.textIdx % this.state.showSecs === this.state.showSecs - 2 &&
+            <img src={currentUrl} alt='cannot display' height="300px" width="450px" className="fade-out"/>
+          }
+          {this.state.textIdx % this.state.showSecs === this.state.showSecs - 1 &&
             <div className="disablePage">
             </div>
           }
@@ -207,19 +372,31 @@ class TestPage extends Component {
             <Container>
               <Row>
                 <Col>
-                  {!this.state.test &&
-                    <Button variant="info">Indoor (F)</Button>
+                  {!(this.state.test || this.state.ttest) && this.state.fpress &&
+                    <Button className="test-button-pressed" variant="info">Indoor (F)</Button>
                   }
-                  {this.state.test &&
-                    <Button variant="info">New (F)</Button>
+                  {!(this.state.test || this.state.ttest) && !this.state.fpress &&
+                    <Button className="test-button" variant="info">Indoor (F)</Button>
+                  }
+                  {(this.state.test || this.state.ttest) && this.state.fpress &&
+                    <Button className="test-button-pressed" variant="info">New (F)</Button>
+                  }
+                  {(this.state.test || this.state.ttest) && !this.state.fpress &&
+                    <Button className="test-button" variant="info">New (F)</Button>
                   }
                 </Col>
                 <Col>
-                {!this.state.test &&
-                  <Button variant="info">Outdoor (J)</Button>
+                {!(this.state.test || this.state.ttest) && this.state.jpress &&
+                  <Button className="test-button-pressed" variant="info">Outdoor (J)</Button>
                 }
-                {this.state.test &&
-                  <Button variant="info">Old (J)</Button>
+                {!(this.state.test || this.state.ttest) && !this.state.jpress &&
+                  <Button className="test-button" variant="info">Outdoor (J)</Button>
+                }
+                {(this.state.test || this.state.ttest) && this.state.jpress &&
+                  <Button className="test-button-pressed" variant="info">Old (J)</Button>
+                }
+                {(this.state.test || this.state.ttest) && !this.state.jpress &&
+                  <Button className="test-button" variant="info">Old (J)</Button>
                 }
                 </Col>
               </Row>

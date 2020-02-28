@@ -1,35 +1,25 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../css/TestPage.css';
+import {Container, Col, Row, Button} from 'react-bootstrap';
 
 class TestImage extends Component {
   constructor(){
     super();
-    this.state = {
-      phase: 0,
-    };
   }
 
-  componentDidMount() {
-
-    setInterval(() => {
-      this.setState({phase: ((this.state.phase) + 1) % 3});
-    }, 1000);
-  };
-
   render() {
-    if (this.state.phase != 2) {
-      return (
-        <div>
-          <img src={this.props.url} alt='cannot display' height="300px" width="300px"/>
-        </div>
-      );
-    } else {
-      return (
-        <div className="disablePage">
-        </div>
-      );
-    }
+    return (
+      <div className='test-page'>
+        <Row>
+          <Col md={6}>
+            <img src={this.props.surl} alt='cannot display'  className="resultimgDisplay"/>
+          </Col>
+          <Col md={6}>
+            <img src={this.props.turl} alt='cannot display'  className="resultimgDisplay"/>
+          </Col>
+        </Row>
+      </div>
+    );
   }
 }
 
