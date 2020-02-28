@@ -125,8 +125,9 @@ class TestPage extends Component {
       templ.push(l);
       this.setState({list: templ});
       this.setState({choseAnswer: true});
-    }else if (this.state.tlist !== [] && e.keyCode === 32){
+    }else if (this.state.tlist.length !== 0 && e.keyCode === 32){
       e.preventDefault();
+      console.log(this.state.tlist);
       this.setState({buttonpress: true},
       () => {
         setTimeout(
