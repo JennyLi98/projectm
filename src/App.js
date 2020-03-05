@@ -62,12 +62,14 @@ class App extends Component {
         Socket.setHeader(response.data.token);
         Test.getMDTO()
           .then(response => {
+          console.log(response);
           console.log(response.data);
           this.setState({testlist: response.data});
         })
         .catch(error => console.log(error));
         Test.getPMDTO()
           .then(response => {
+          console.log(response);
           console.log(response.data);
           this.setState({plist: response.data});
         })
