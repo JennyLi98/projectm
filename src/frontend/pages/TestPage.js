@@ -28,8 +28,8 @@ class TestPage extends Component {
       finished: false,
       interval: 1000,
       time: 0,
-      list: [],
-      tlist:[],
+      slist: [],
+      list:[],
       choseAnswer: false,
       intervalId: 0,
       test: false,
@@ -44,7 +44,8 @@ class TestPage extends Component {
       buttonpress: false,
       fpress: false,
       jpress: false,
-      testlist: [['alt'], ['alt']]
+      testlist: [['alt'], ['alt']],
+      curlistlen: 0
     };
     this.toTest = this.toTest.bind(this);
     this.toStudy = this.toStudy.bind(this);
@@ -52,18 +53,11 @@ class TestPage extends Component {
     this.toTrialTest = this.toTrialTest.bind(this);
     this.toTrialStudy = this.toTrialStudy.bind(this);
     this.handleInterval = this.handleInterval.bind(this);
+    this.sendResult = this.sendResult.bind(this);
   }
   componentWillMount() {
       document.addEventListener("keydown", this.handleKeyDown.bind(this));
   }
-
-  componentDidMount() {
-    Test.getPMDTO()
-      .then(response => {
-      this.setState({tlist: response.data});
-    })
-    .catch(error => console.log(error));
-  };
 
   handleInterval() {
     var d = new Date();
@@ -71,7 +65,7 @@ class TestPage extends Component {
     this.timeout = setInterval(() => {
       let currentIdx = this.state.textIdx;
       console.log(currentIdx % this.state.showSecs);
-      if (this.state.tlist.length != 0 && (this.state.ttest || this.state.tstudy) && currentIdx === this.state.tlist[0].length * this.state.showSecs - 1) {
+      if (this.props.plist.length != 0 && (this.state.ttest || this.state.tstudy) && currentIdx === this.state.curlistlen * this.state.showSecs - 1) {
         if (this.state.ttest === true) {
           this.setState({ ttest: false });
           this.setState({ tResult: true });
@@ -80,10 +74,11 @@ class TestPage extends Component {
           this.setState({ tstudy: false });
         }
       }
-      else if (!this.state.ttest && !this.state.tstudy && currentIdx === this.props.testlist[0].length * this.state.showSecs - 1) {
+      else if (!this.state.ttest && !this.state.tstudy && currentIdx === this.state.curlistlen * this.state.showSecs - 1) {
         console.log("need to finish now");
         if (this.state.test === true) {
           this.setState({ finished: true });
+          this.sendResult();
         }else {
           this.setState({ second: true });
         }
@@ -125,9 +120,9 @@ class TestPage extends Component {
       templ.push(l);
       this.setState({list: templ});
       this.setState({choseAnswer: true});
-    }else if (this.state.tlist.length !== 0 && e.keyCode === 32){
+    }else if (this.props.plist.length !== 0 && e.keyCode === 32){
       e.preventDefault();
-      console.log(this.state.tlist);
+      console.log(this.props.plist);
       this.setState({buttonpress: true},
       () => {
         setTimeout(
@@ -171,6 +166,9 @@ class TestPage extends Component {
   }
 
   toTest(){
+    this.setState({slist: this.state.list});
+    this.setState({list: []});
+    this.setState({curlistlen: this.props.testlist[1].length});
     this.setState({test: true});
     this.setState({second: false});
     this.setState({ textIdx: 0 });
@@ -178,12 +176,14 @@ class TestPage extends Component {
   }
 
   toStudy(){
+      this.setState({curlistlen: this.props.testlist[0].length});
       this.setState({prepare: false});
       this.setState({ textIdx: 0 });
       this.handleInterval();
   }
 
   toTrialTest(){
+    this.setState({curlistlen: this.props.plist[1].length});
     this.setState({ttest: true});
     this.setState({tSecond: false});
     this.setState({ textIdx: 0 });
@@ -191,16 +191,33 @@ class TestPage extends Component {
   }
 
   toTrialStudy(event){
-      this.setState({tprep: false});
-      this.setState({tstudy: true});
-      this.setState({ textIdx: 0 });
-      this.handleInterval();
+    this.setState({curlistlen: this.props.plist[0].length});
+    this.setState({tprep: false});
+    this.setState({tstudy: true});
+    this.setState({ textIdx: 0 });
+    this.handleInterval();
   }
 
   toReal(){
       this.setState({prepare: true});
       this.setState({tResult: false});
       this.setState({list: []});
+  }
+
+  sendResult(){
+      var skey = {
+        indoor: 0,
+        outdoor: 1
+      };
+      var tkey = {
+        old: 0,
+        new: 1
+      };
+      Test.resultMDTO(skey, tkey, this.state.slist, this.state.list)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => console.log(error));
   }
 
   render() {
@@ -210,10 +227,10 @@ class TestPage extends Component {
         currentUrl = this.props.testlist[1][Math.floor(this.state.textIdx / this.state.showSecs)];
       }
       else if (this.state.ttest) {
-        currentUrl = this.state.tlist[1][Math.floor(this.state.textIdx / this.state.showSecs)];
+        currentUrl = this.props.plist[1][Math.floor(this.state.textIdx / this.state.showSecs)];
       }
       else if (this.state.tstudy) {
-        currentUrl = this.state.tlist[0][Math.floor(this.state.textIdx / this.state.showSecs)];
+        currentUrl = this.props.plist[0][Math.floor(this.state.textIdx / this.state.showSecs)];
       }
       else {
         currentUrl = this.props.testlist[0][Math.floor(this.state.textIdx / this.state.showSecs)];
@@ -234,10 +251,10 @@ class TestPage extends Component {
           <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
           </div>
           {this.state.buttonpress &&
-            <Button className="test-button-pressed" onKeyDown={(e) => this.toTrialStudy}>Let's practice!</Button>
+            <Button className="test-button-pressed" onKeyDown={(e) => this.toTrialStudy}>Press 'Space' to practice!</Button>
           }
           {!this.state.buttonpress &&
-            <Button className="test-button" onKeyDown={(e) => this.toTrialStudy}>Let's practice!</Button>
+            <Button className="test-button" onKeyDown={(e) => this.toTrialStudy}>Press 'Space' to practice!</Button>
           }
         </div>
       );
@@ -257,10 +274,10 @@ class TestPage extends Component {
           <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
           </div>
           {this.state.buttonpress &&
-            <Button className="test-button-pressed" onClick={this.toStudy}>Continue</Button>
+            <Button className="test-button-pressed" onClick={this.toStudy}>Press 'Space' to Continue</Button>
           }
           {!this.state.buttonpress &&
-            <Button className="test-button" onClick={this.toStudy}>Continue</Button>
+            <Button className="test-button" onClick={this.toStudy}>Press 'Space' to Continue</Button>
           }
 
         </div>
@@ -286,10 +303,10 @@ class TestPage extends Component {
           <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
           </div>
           {this.state.buttonpress &&
-            <Button className="test-button-pressed" onClick={this.toTrialTest}>Continue</Button>
+            <Button className="test-button-pressed" onClick={this.toTrialTest}>Press 'Space' to Continue</Button>
           }
           {!this.state.buttonpress &&
-            <Button className="test-button" onClick={this.toTrialTest}>Continue</Button>
+            <Button className="test-button" onClick={this.toTrialTest}>Press 'Space' to Continue</Button>
           }
 
         </div>
@@ -315,10 +332,10 @@ class TestPage extends Component {
           <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
           </div>
           {this.state.buttonpress &&
-            <Button  className="test-button-pressed" onClick={this.toTest}>Continue</Button>
+            <Button  className="test-button-pressed" onClick={this.toTest}>Press 'Space' to Continue</Button>
           }
           {!this.state.buttonpress &&
-            <Button  className="test-button" onClick={this.toTest}>Continue</Button>
+            <Button  className="test-button" onClick={this.toTest}>Press 'Space' to Continue</Button>
           }
 
         </div>
@@ -339,13 +356,13 @@ class TestPage extends Component {
       return (
         <div className="TResultPage">
           <p className="instruction-title">Here are the images that you've shown:</p>
-          <ResultList study={this.state.tlist[0]} test={this.state.tlist[1]} />
+          <ResultList study={this.props.plist[0]} test={this.props.plist[1]} />
           <p className="instruction-title">Ready for some real challenge?</p>
           {this.state.buttonpress &&
-            <Button className="test-button-pressed" onClick={this.toReal}>Continue</Button>
+            <Button className="test-button-pressed" onClick={this.toReal}>Press 'Space' to Continue</Button>
           }
           {!this.state.buttonpress &&
-            <Button className="test-button" onClick={this.toReal}>Continue</Button>
+            <Button className="test-button" onClick={this.toReal}>Press 'Space' to Continue</Button>
           }
         </div>
       );
@@ -354,10 +371,10 @@ class TestPage extends Component {
       return (
         <div className="TestPage">
           {(this.state.ttest || this.state.tstudy) &&
-              <p className="instruction">Please click 'F' to select the option on the left, and click 'J' to select the option on the right. {Math.floor(this.state.textIdx / this.state.showSecs) + 1} / {this.state.tlist[0].length}</p>
+              <p className="instruction">Please click 'F' to select the option on the left, and click 'J' to select the option on the right. {Math.floor(this.state.textIdx / this.state.showSecs) + 1} / {this.state.curlistlen}</p>
           }
           {!this.state.ttest && !this.state.tstudy && (this.props.testlist !== undefined && this.props.testlist[0] !== undefined) &&
-              <p className="instruction">Please click 'F' to select the option on the left, and click 'J' to select the option on the right. {Math.floor(this.state.textIdx / this.state.showSecs) + 1} / {this.props.testlist[0].length}</p>
+              <p className="instruction">Please click 'F' to select the option on the left, and click 'J' to select the option on the right. {Math.floor(this.state.textIdx / this.state.showSecs) + 1} / {this.state.curlistlen}</p>
           }
           {this.state.textIdx % this.state.showSecs < this.state.showSecs - 2 &&
             <img src={currentUrl} alt='cannot display' height="300px" width="450px"/>

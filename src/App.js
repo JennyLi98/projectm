@@ -17,26 +17,15 @@ import Contact from './frontend/pages/Contact.js';
 import {BrowserRouter, Route, Link} from 'react-router-dom';
 import Test from "./frontend/services/test";
 import MLogo from './frontend/imgs/letter_m_blue.png';
+import Socket from "./frontend/util/Socket";
 
 const testInfo =
 [
   [
-  "https://www.elitetrimworks.com/skin1/images/gallery/square/square%20columns_27PM.png",
-  "https://live.staticflickr.com/3514/3810627510_d9a567624a_b.jpg",
-  "https://www.elitetrimworks.com/skin1/images/gallery/square/square_wood_columns.png",
-  "https://upload.wikimedia.org/wikipedia/commons/1/19/Park_Square%2C_Leeds_24_March_2017.jpg",
-  "https://inhabitat.com/wp-content/blogs.dir/1/files/2014/12/Foundry-Square-living-wall-by-Habitat-Horticulture-6.jpg",
-  "https://i1.wp.com/thepointsguy.com/wp-content/uploads/2019/03/Times-Square-NYC-Edition_March-2019_NEllis-25.jpg?ssl=1",
-  "https://mk0homznspaceco9ygoq.kinstacdn.com/wp-content/uploads/2018/09/Prestige-Park-Square-Elevation.jpg"
+  "https://www.elitetrimworks.com/skin1/images/gallery/square/square%20columns_27PM.png"
   ],
 [
-  "https://www.elitetrimworks.com/skin1/images/gallery/square/square%20columns_27PM.png",
-  "https://live.staticflickr.com/3514/3810627510_d9a567624a_b.jpg",
-  "https://www.elitetrimworks.com/skin1/images/gallery/square/square_wood_columns.png",
-  "https://upload.wikimedia.org/wikipedia/commons/1/19/Park_Square%2C_Leeds_24_March_2017.jpg",
-  "https://inhabitat.com/wp-content/blogs.dir/1/files/2014/12/Foundry-Square-living-wall-by-Habitat-Horticulture-6.jpg",
-  "https://i1.wp.com/thepointsguy.com/wp-content/uploads/2019/03/Times-Square-NYC-Edition_March-2019_NEllis-25.jpg?ssl=1",
-  "https://mk0homznspaceco9ygoq.kinstacdn.com/wp-content/uploads/2018/09/Prestige-Park-Square-Elevation.jpg"
+  "https://live.staticflickr.com/3514/3810627510_d9a567624a_b.jpg"
   ]
 ];
 
@@ -50,7 +39,8 @@ class App extends Component {
       gender: "",
       birthday: Date(),
       uid: null,
-      testlist: []
+      testlist: [],
+      plist:[]
     }
   }
 
@@ -68,12 +58,18 @@ class App extends Component {
     Test.user(email, age, gender)
       .then(response => {
         console.log(response);
-        console.log(response.data.user_id);
-        this.setState({uid: response.data.user_id});
-        Test.getMDTO(response.data.user_id)
+        console.log(response.data.token);
+        Socket.setHeader(response.data.token);
+        Test.getMDTO()
           .then(response => {
           console.log(response.data);
           this.setState({testlist: response.data});
+        })
+        .catch(error => console.log(error));
+        Test.getPMDTO()
+          .then(response => {
+          console.log(response.data);
+          this.setState({plist: response.data});
         })
         .catch(error => console.log(error));
       })
@@ -145,7 +141,7 @@ class App extends Component {
               )}/>
               <Route path='/test' render={() => (
                 <div>
-                  <TestPage testlist={testInfo}/>
+                  <TestPage testlist={this.state.testlist} plist={this.state.plist}/>
                 </div>
               )}/>
               <Route path='/testlist' render={() => (

@@ -12,10 +12,13 @@ const HTTPMethod = Object.freeze({
 });
 
 function initSocket() {
-  const { common } = Axios.defaults.headers;
-
   Axios.defaults.baseURL = baseUrl;
   console.log(Axios.defaults.baseURL);
+}
+
+function setHeader(token) {
+  const { common } = Axios.defaults.headers;
+  common["Authorization"] = 'Token ' + token;
 }
 
 async function GET(path) {
@@ -59,6 +62,7 @@ async function sendHTTP(method, path, data) {
 
 export default {
   initSocket,
+  setHeader,
   GET,
   POST,
   DELETE
