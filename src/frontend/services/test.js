@@ -16,7 +16,7 @@ async function user(age, gender) {
 }
 
 async function getMDTO() {
-  return await Socket.GET(mdtoEP);
+  return await Socket.POST(mdtoEP);
 }
 
 async function getPMDTO() {
