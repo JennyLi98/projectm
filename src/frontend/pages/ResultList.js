@@ -1,5 +1,6 @@
 import React from 'react';
 import TestImage from './TestImage';
+import {Container, Col, Row, Button} from 'react-bootstrap';
 
 const ResultList = ({test, study}) =>{
   console.log(test);
@@ -9,6 +10,16 @@ const ResultList = ({test, study}) =>{
   });
   return (
     <div>
+    <div className='test-page'>
+      <Row>
+        <Col md={6}>
+          <p>Here is what you saw for "indoor" and "outdoor" judgements</p>
+        </Col>
+        <Col md={6}>
+          <p>Here is what you saw for "old" and "new" judgements</p>
+        </Col>
+      </Row>
+    </div>
       {cardComponent}
     </div>
   );

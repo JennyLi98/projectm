@@ -35,7 +35,7 @@ class TestPage extends Component {
       test: false,
       second: false,
       prepare: false,
-      showSecs: 5,
+      showSecs: 2,
       tprep: true, //prepare page for trial
       ttest: false,
       tstudy: false,
@@ -251,10 +251,10 @@ class TestPage extends Component {
           <img src={Keyboard} alt='cannot display' height="300px" style= {{marginBottom: 50+"px"}}/>
           </div>
           {this.state.buttonpress &&
-            <Button className="test-button-pressed" onKeyDown={(e) => this.toTrialStudy}>Press 'Space' to practice!</Button>
+            <Button className="test-button-pressed" onClick={this.toTrialStudy}>Press 'Space' to practice!</Button>
           }
           {!this.state.buttonpress &&
-            <Button className="test-button" onKeyDown={(e) => this.toTrialStudy}>Press 'Space' to practice!</Button>
+            <Button className="test-button" onClick={this.toTrialStudy}>Press 'Space' to practice!</Button>
           }
         </div>
       );
@@ -355,7 +355,7 @@ class TestPage extends Component {
       clearInterval(this.state.intervalId);
       return (
         <div className="TResultPage">
-          <p className="instruction-title">Here are the images that you've shown:</p>
+          <p className="instruction-title">Here are the images you saw:</p>
           <ResultList study={this.props.plist[0]} test={this.props.plist[1]} />
           <p className="instruction-title">Ready for some real challenge?</p>
           {this.state.buttonpress &&
@@ -364,6 +364,7 @@ class TestPage extends Component {
           {!this.state.buttonpress &&
             <Button className="test-button" onClick={this.toReal}>Press 'Space' to Continue</Button>
           }
+          <p className="instruction-title"></p>
         </div>
       );
     }

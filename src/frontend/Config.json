@@ -5,7 +5,7 @@
     "testEP": "/users/2.json",
     "userEP": "/users/",
     "mdtoEP": "/mdto/",
-    "mdtoPEP": "/mdto/practice",
+    "mdtoPEP": "/mdto/practice/",
     "resultEP": "/mdto/results/"
   }
 }
