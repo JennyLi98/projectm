@@ -51,11 +51,10 @@ class App extends Component {
   handlePretest = (gender, age, email) => {
     console.log(gender);
     console.log(age);
-    console.log(email);
     this.setState({gender: gender});
     this.setState({age: age});
 
-    Test.user(email, age, gender)
+    Test.user(age, gender)
       .then(response => {
         console.log(response);
         console.log(response.data.token);

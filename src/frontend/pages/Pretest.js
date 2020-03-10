@@ -119,7 +119,9 @@ class Pretest extends Component {
               <input type="number" name="age" onChange={this.updateField} value={this.state.age}/>
             </Col>
             </Row>
-            <Row>
+            {
+              /*
+              <Row>
             <Col md={4}>
               <p className="form-title">&nbsp;&nbsp; Email</p>
             </Col>
@@ -127,6 +129,7 @@ class Pretest extends Component {
               <input type="text" name="email" onChange={this.updateField} value={this.state.email}/>
             </Col>
             </Row>
+            */}
             </div>
             <Link to="test"><Button onClick={() => this.props.handlePretest(this.state.gender, this.state.age, this.state.email)}>Continue</Button></Link>
 
