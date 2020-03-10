@@ -16,14 +16,13 @@ async function user(age, gender) {
 }
 
 async function getMDTO() {
-  return await Socket.POST(mdtoEP);
+  return await Socket.GET(mdtoEP);
 }
-
 
 async function getPMDTO() {
   const payLoad = {
   };
-  return await Socket.POST(mdtoPEP);
+  return await Socket.GET(mdtoPEP);
 }
 
 async function resultMDTO(skey, tkey, slist, tlist) {
