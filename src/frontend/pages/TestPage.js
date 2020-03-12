@@ -35,7 +35,7 @@ class TestPage extends Component {
       test: false,
       second: false,
       prepare: false,
-      showSecs: 1,
+      showSecs: 5,
       tprep: true, //prepare page for trial
       ttest: false,
       tstudy: false,
