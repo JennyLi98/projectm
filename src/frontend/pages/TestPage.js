@@ -211,8 +211,8 @@ class TestPage extends Component {
         outdoor: 1
       };
       var tkey = {
-        old: 0,
-        new: 1
+        new: 0,
+        old: 1
       };
       Test.resultMDTO(skey, tkey, this.state.slist, this.state.list)
       .then(response => {
