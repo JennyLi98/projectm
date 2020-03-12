@@ -90,16 +90,19 @@ class App extends Component {
       {
         "name":"Object Discrimination",
         "imgid": 1,
+        "deployed": true,
         "url":"https://image.freepik.com/free-vector/vintage-glass-dome-wooden-tray-realistic_107791-236.jpg"
       },
       {
-        "name":"Coming Soon",
+        "name":"Spatial Discrimination",
         "imgid": 0,
+        "deployed": false,
         "url":"https://image.freepik.com/free-vector/multicolored-soap-bubbles_87720-2519.jpg"
       },
       {
-        "name":"Coming Soon",
+        "name":"Temporal Discrimination",
         "imgid": 0,
+        "deployed": false,
         "url":"logo192.png"
       }];
     this.setState({animals: animalsVar});

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 
 const CardList = ({animals}) =>{
   const cardComponent = animals.map((user, i) => {
-    return <Card key={i} name={animals[i].name} description={animals[i].description} url={animals[i].url} imgid={animals[i].imgid} />
+    return <Card key={i} name={animals[i].name} description={animals[i].description} url={animals[i].url} imgid={animals[i].imgid} deployed={animals[i].deployed} />
   });
   return (
     <div className="block">

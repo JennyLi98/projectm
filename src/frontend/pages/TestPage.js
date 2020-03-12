@@ -45,7 +45,8 @@ class TestPage extends Component {
       fpress: false,
       jpress: false,
       testlist: [['alt'], ['alt']],
-      curlistlen: 0
+      curlistlen: 0,
+      percCorrect: 0.0
     };
     this.toTest = this.toTest.bind(this);
     this.toStudy = this.toStudy.bind(this);
@@ -216,6 +217,7 @@ class TestPage extends Component {
       Test.resultMDTO(skey, tkey, this.state.slist, this.state.list)
       .then(response => {
         console.log(response.data);
+        this.setState({percCorrect: response.data.percCorrect});
       })
       .catch(error => console.log(error));
   }
@@ -345,8 +347,7 @@ class TestPage extends Component {
       clearInterval(this.state.intervalId);
       return (
         <div className="TestPage">
-
-          <p className="instruction-title">You have finished the test, please use the link to go back to homepage.</p>
+          <p className="instruction-title">Congratulations on finishing the test! You got {this.state.percCorrect * 100} % of the images correct. Great job!</p>
           <Button className="test-button" href="/">Back to home page</Button>
         </div>
       );

@@ -8,15 +8,27 @@ import {Link} from 'react-router-dom';
 const img = [BrainImg, ObjDisc];
 
 const Card = (props) => {
+  if(props.deployed){
+    return (
+        <Link to="/pretest" className='te'>
+        <div className='te'>
+          <img src={img[props.imgid]} alt='cannot display'  className="imgDisplay"/>
+          <h1>
+            {props.name}
+          </h1>
+          <p></p>
+        </div>
+      </Link>
+    );
+  }
   return (
-    <Link to="/pretest" className='te'>
       <div className='te'>
         <img src={img[props.imgid]} alt='cannot display'  className="imgDisplay"/>
         <h1>
           {props.name}
         </h1>
+        <p>Coming Soon</p>
       </div>
-    </Link>
   );
 }
 
