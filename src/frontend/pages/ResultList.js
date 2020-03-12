@@ -12,11 +12,11 @@ const ResultList = ({test, study}) =>{
     <div>
     <div className='test-page'>
       <Row>
-        <Col md={6}>
-          <p>Here is what you saw for "indoor" and "outdoor" judgements</p>
+        <Col md={6} className="text-right">
+          <p className="resulttextDisplayl">Here is what you saw for "indoor" and "outdoor" judgements</p>
         </Col>
-        <Col md={6}>
-          <p>Here is what you saw for "old" and "new" judgements</p>
+        <Col md={6} className="text-left">
+          <p className="resulttextDisplayl">Here is what you saw for "old" and "new" judgements</p>
         </Col>
       </Row>
     </div>

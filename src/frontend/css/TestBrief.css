@@ -29,10 +29,24 @@
   width: 30%;
 }
 
-.resultimgDisplay {
-  margin: 3% auto;
+.resultimgDisplayl {
+  margin: 3% 100px 3% auto;
   width: 200px;
   height: 200px;
+}
+
+.resultimgDisplayr {
+  margin: 3% auto 3% 100px;
+  width: 200px;
+  height: 200px;
+}
+
+.resulttextDisplayl {
+  margin: 3% 30px 3% auto;
+}
+
+.resulttextDisplayr {
+  margin: 3% auto 3% 30px;
 }
 
 .buttonBlock {

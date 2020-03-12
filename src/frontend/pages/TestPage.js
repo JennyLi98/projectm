@@ -35,7 +35,7 @@ class TestPage extends Component {
       test: false,
       second: false,
       prepare: false,
-      showSecs: 5,
+      showSecs: 1,
       tprep: true, //prepare page for trial
       ttest: false,
       tstudy: false,
@@ -358,7 +358,7 @@ class TestPage extends Component {
         <div className="TResultPage">
           <p className="instruction-title">Here are the images you saw:</p>
           <ResultList study={this.props.plist[0]} test={this.props.plist[1]} />
-          <p className="instruction-title">Ready for some real challenge?</p>
+          <p className="instruction-title">Ready for a real challenge?</p>
           {this.state.buttonpress &&
             <Button className="test-button-pressed" onClick={this.toReal}>Press 'Space' to Continue</Button>
           }
