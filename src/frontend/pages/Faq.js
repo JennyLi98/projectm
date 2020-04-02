@@ -26,11 +26,11 @@ class Faq extends Component {
           </p>
           {this.state.questions[0] &&
             <p className="faq-content">
-            PM is a research study aiming to collect a whole bunch of data relating to how people of all ages, genders, nationalities, cognitive
-            health, etc perform on a suite of three computer tasks designed to be highly sensitive at examining differences in memory processes,
-            which will provide a rich space by which to investigate memory abnormalities. The hope is that we can make these tasks so sensitive and
-            collect enough data to be able to predict the beginnings of cognitive decline much earlier than we currently can, absent of a
-            neurological exam, invasive blood tests, or expensive neuroimaging procedures.
+            PM is a research study collecting a whole bunch of data from people of all ages, genders, nationalities, cognitive
+            health, and their performance on three computer tasks. These tasks are highly sensitive at examining differences in memory processes,
+            which will provide a rich space to investigate memory abnormalities. We hope to make these tasks so sensitive and
+            collect enough data that we predict the beginnings of cognitive decline much earlier without
+            neurological exam, invasive blood tests, or expensive neuroimaging techniques.
           </p>}
         </div>
         <div className="faq-block">
