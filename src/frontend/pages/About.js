@@ -11,14 +11,15 @@ class About extends Component {
 
         <h1 className="about-title">Project Mnemosyne - Where do your memory abilities rank compared to everyone else?</h1>
         <p className="about-stitle">(AI Robots excluded)</p>
-        <p className="about-content">We’re interested in collecting a lot of information from people
+        <div  className="about-content">
+        <p className="about-section">We’re interested in collecting a lot of information from people
         around the world to tell us more about how our brains work to remember. Our task suite examines
-        the what, where, and when of memory. We , providieng a rich space by which to investigate memory
-        differencesdeviations- from those with highly superior memory to those experiencing memory
-         difficulties. Take these three tasks to test your memory in manyultiple domains, and see how you score!
+        the what, where, and when of memory. We provide a rich space by which to investigate memory
+        differences- from those with superior memory to those experiencing memory
+         difficulties. Take these three tasks to test your memory and see how you score!
         </p>
 
-         <p className="about-content">After completing these three memory tasks, you’ll be given a report
+         <p className="about-section">After completing these three memory tasks, you’ll be given a report
          on your performance and where you rank compared to others that have completed Project Mnemosyne. Please
          keep in mind though that a person’s individual test score can be affected by
          a number of factors, including but not limited to stress, sleep, interest, attention, the device you are
@@ -26,6 +27,7 @@ class About extends Component {
          time and not as an indication of overall cognitive health or memory capacity. These tasks are for research
          purposes only and are not clinically significant. We hope you have fun with them!
          </p>
+         </div>
       </div>
     );
   }

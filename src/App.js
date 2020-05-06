@@ -187,7 +187,7 @@ class App extends Component {
           All Rights Reserved.
           </p>
           <p>
-          Project Mnemosyne is a research study by Signa Therapeutics, LLC and the University of California, Irvine.
+          Project Mnemosyne is a research study by the University of California, Irvine.
           </p>
           </div>
         </footer>

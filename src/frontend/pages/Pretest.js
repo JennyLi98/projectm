@@ -50,9 +50,9 @@ class Pretest extends Component {
              including but not limited to stress, sleep, interest, or attention. In otherwords, we ask that you consider these results
              as a "snapshot" in time and not as an indication of overall cognitive health or ability. It is important to understand that
             these results should never be interpretedin isolation when considering a diagnosis of a memory disorder. Performance measures
-            produced by these tasks are best interpreted inconjunction with a thorough patient history and clinical workup, which is not 
+            produced by these tasks are best interpreted inconjunction with a thorough patient history and clinical workup, which is not
             conducted during this study.</p>
-            <Button onClick={this.agreedDisclaimer}>Continue</Button>
+            <Button className="test-button" onClick={this.agreedDisclaimer}>Continue</Button>
           </div>
         );
     }else if(this.state.stage === 1) {
@@ -119,7 +119,7 @@ class Pretest extends Component {
             </Row>
             */}
             </div>
-            <Link to="test"><Button onClick={() => this.props.handlePretest(this.state.gender, this.state.age, this.state.email)}>Continue</Button></Link>
+            <Link to="test"><Button className="test-button" onClick={() => this.props.handlePretest(this.state.gender, this.state.age, this.state.email)}>Continue</Button></Link>
 
             </div>
           </div>
